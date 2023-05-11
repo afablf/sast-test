@@ -18,7 +18,7 @@ public class MyClass {
 
 
 	public void myPublicMethod(StringBuffer sql, String startDateToConvert, String endDateToConvert) {
-		sql.append(" WHERE p.segment  in ('2W', 'MM') ");
+		sql.append(" WHERE p.segment  in ('2W', 'WW') ");
 
 		if (Validator.isNotNull(startDateToConvert)) {
 			final Date dateUser = MyClass.sdf.parse(startDateToConvert);
