@@ -12,32 +12,24 @@ import com.liferay.portal.kernel.util.Validator;
 
 public class MyClass {
 
-	private static final String BR_DATE_PATTERN = "dd/MM/yyyy";
-	private static final String DB_DATE_PATTERN = "yyyy-MM-dd";
+	private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	private static final SimpleDateFormat sdfDataBase = new SimpleDateFormat("yyyy-MM-dd");
+	private static final SimpleDateFormat sdfDataBaseBR = new SimpleDateFormat("dd/MM/yyyy");
+
 
 	public void myPublicMethod(StringBuffer sql, String startDateToConvert, String endDateToConvert) {
 		sql.append(" WHERE p.segment  in ('2W', 'MM') ");
 
-		if (Validator.isNotNull(salesSearchDTO.getSalesReportStart())) {
-			final Date dateUser = getDateFromString(BR_DATE_PATTERN, dateToConvert);
-			final String startDate = getDateString(DB_DATE_PATTERN, dateUser);
+		if (Validator.isNotNull(startDateToConvert)) {
+			final Date dateUser = MyClass.sdf.parse(startDateToConvert);
+			final String startDate = MyClass.sdfDataBase.format(dateUser);
 			sql.append(" AND p.billingDate >='" + startDate + "' ");
 		} else if (Validator.isNotNull(endDateToConvert)) {
-			final Date dateUser = getDateFromString(BR_DATE_PATTERN, endDateToConvert);
-			final String endDate = getDateString(DB_DATE_PATTERN, dateUser);
+			final Date dateUser = MyClass.sdf.parse(endDateToConvert);
+			final String startDate = MyClass.sdfDataBase.format(dateUser);
 			sql.append(" AND p.billingDate <='" + endDate + "' ");		
 		}
 
 	}
 
-	private String getDateString(String pattern, Date date) {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-		return simpleDateFormat.format(date);
-	}
-	
-	private Date getDateFromString(String pattern, String dateString) throws ParseException {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-		
-		return simpleDateFormat.parse(dateString);
-	}
 }
